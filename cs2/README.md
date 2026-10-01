@@ -7,11 +7,12 @@ JSON and glTF.
 ```bash
 pip install -r requirements.txt
 python -m heat3d_cs2 demos <demo files or folders> -o out          # every match in them
-python -m heat3d_cs2 map de_mirage -o out/maps/de_mirage.glb       # the map from the installed game
-python -m heat3d_cs2 scoreboard out/<match>.match.json             # a match's scoreboard as text
+python -m heat3d_cs2 map de_mirage -o out/de_mirage/de_mirage.glb  # the map from the installed game
+python -m heat3d_cs2 scoreboard out/de_mirage/<match>.match.json   # a match's scoreboard as text
 ```
 
-Per match, `demos` writes:
+Per match, `demos` writes into a folder per map (`out/de_mirage/...`), so a
+map's matches load together:
 
 - `<match>.parquet` - every player eight times a second (`--every 8` ticks of
   64) and every event where it happened, one row each: the heatmap's data.

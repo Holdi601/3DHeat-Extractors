@@ -54,7 +54,7 @@ Counter-Strike 2 demos, and the map they were played on:
 cd cs2
 pip install -r requirements.txt
 python -m heat3d_cs2 demos <folder of .dem files> -o out
-python -m heat3d_cs2 map de_mirage -o out/maps/de_mirage.glb
+python -m heat3d_cs2 map de_mirage -o out/de_mirage/de_mirage.glb
 ```
 
 ## The rules these are built under

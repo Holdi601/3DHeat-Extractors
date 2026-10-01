@@ -6,8 +6,8 @@ Command line.
     python -m heat3d_cs2 scoreboard <match.json>
 
 `demos` groups a match's parts by name (`...-p1.dem`, `...-p2.dem` are one
-match) and writes `<match>.parquet` and `<match>.match.json` for each, skipping
-what is already written unless `--force`.
+match) and writes `<map>/<match>.parquet` and `<map>/<match>.match.json` for
+each, skipping what is already written unless `--force`.
 """
 
 from __future__ import annotations
@@ -53,7 +53,8 @@ def convert(name: str, files: list[Path], folder: Path, every: int) -> str:
         if not match.rounds:
             lines.append(f"{label}: no complete round in {len(raws)} file(s) - nothing written")
             continue
-        write(match, folder)
+        # A folder per map: a heatmap is of one map, so loading one folder is loading one map.
+        write(match, folder / (match.map or "unknown"))
         score = " ".join(f"{t} {s}" for t, s in match.rounds[-1].score.items()) if match.rounds else "no rounds"
         cut = f", {len(match.incomplete)} incomplete round(s) left out" if match.incomplete else ""
         late = f", recorded from round {match.rounds[0].number}" if match.rounds and match.rounds[0].number > 1 else ""
@@ -63,7 +64,8 @@ def convert(name: str, files: list[Path], folder: Path, every: int) -> str:
 
 def _demos(args) -> int:
     folder = Path(args.out)
-    todo = {n: f for n, f in matches_in(args.paths).items() if args.force or not (folder / f"{n}.parquet").exists()}
+    written = {p.stem for p in folder.rglob("*.parquet")} if folder.exists() else set()
+    todo = {n: f for n, f in matches_in(args.paths).items() if args.force or n not in written}
     if args.map:
         todo = {n: f for n, f in todo.items() if args.map.lower() in n.lower()}
     if not todo:
