@@ -23,6 +23,7 @@ source is what counts, not this file.
 | **Unreal exporter** (`unreal/`) | Level → `.glb` from inside the editor | Developers, on their own game | Yes |
 | **Game capture** (`gamecapture/`) | Level reconstructed from gameplay video; lap telemetry recorded from games' published interfaces | Players, and anyone without the project files | **Depends on the model chosen** — see below |
 | **Game files** (`gamefiles/`) | Courses and levels read out of shipped archives | Players and developers with an installed game | Yes for the tool; the game's own content stays its owner's |
+| **CS2** (`cs2/`) | Counter-Strike 2 demos into tables and match summaries; maps into geometry | Players, analysts, teams | Yes for the tool; demos and maps stay their owners' |
 
 A studio developer has the project open and should use the Unreal exporter: it
 reads the real geometry and is exact. Someone without the project — a player,
@@ -149,6 +150,34 @@ as an interoperability mappings file holds them - derived from the Unreal
 Engine headers Epic makes available to anyone with a linked account, and
 checked against the shipped data. No engine source is
 included or required.
+
+---
+
+## CS2 — `cs2/`
+
+### Software
+
+| Package | Licence | Note |
+|---|---|---|
+| demoparser2 | MIT | Reading the demos |
+| pyarrow | Apache-2.0 | Writing Parquet |
+| pandas, numpy | BSD-3-Clause | |
+| pytest | MIT | Development only |
+
+All permissive. The map export runs **Source2Viewer's command line**
+([ValveResourceFormat](https://github.com/ValveResourceFormat/ValveResourceFormat),
+MIT) as a separate program the user installs; it is not bundled and nothing
+of it is copied here.
+
+### What it reads
+
+A demo is the server's recording of a match; the map is part of the game. The
+tool reads files the user has - their own matches, demos they downloaded, the
+installed game - and what comes out is for their own analysis. Demos and
+data derived from them are not this project's to redistribute, and not the
+user's either: Valve has had a dataset built from professional demos taken
+down. Sites that offer demos commonly forbid automated downloading in their
+terms of use, which is why the tool reads demos from disk and fetches none.
 
 ---
 

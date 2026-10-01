@@ -37,8 +37,14 @@ unreal/**/Intermediate/
 *.npy
 *.ibt
 *.lap.json
+*.match.json
 *.tele.gz
 *.dem
+*.dem.zst
+*.dem.bz2
+*.rar
+*.bz2
+*.zst
 
 # Maps, levels, models and game archives, by type.
 *.glb

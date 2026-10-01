@@ -1,8 +1,9 @@
 # 3DHeat Extractors
 
-Free and open-source tools that get a game's courses, levels and lap telemetry
-out into plain files: a level or course as a `.glb` (glTF), a lap as a JSON
-document. They were written for the 3DHeat telemetry viewer, and anything that
+Free and open-source tools that get a game's courses, levels, lap telemetry
+and match recordings out into plain files: a level or course as a `.glb`
+(glTF), a lap as a JSON document, a Counter-Strike 2 match as a Parquet table
+and a JSON summary. They were written for the 3DHeat telemetry viewer, and anything that
 reads glTF and JSON can use what they write.
 
 MIT licensed - see [`LICENSE`](LICENSE), and [`LICENSES.md`](LICENSES.md) for
@@ -15,6 +16,7 @@ the third-party packages and models they use.
 | [`gamefiles/`](gamefiles/README.md) | Reads courses and levels out of the archives a game ships. `course <lap>` exports the track around a recorded lap - ground, road, kerbs, barriers, signs - as one textured `.glb` | Forza Horizon, BeamNG.drive, Assetto Corsa Rally; readers for Unreal `.pak` and IoStore, Unity, Frostbite and Source 2 archives |
 | [`gamecapture/`](gamecapture/README.md) | Records lap telemetry from the interfaces games publish for it, and reconstructs a level from gameplay video | Forza Horizon and Motorsport, Assetto Corsa / ACC / EVO / Rally, EA SPORTS WRC, DiRT Rally 2.0 / 1 / DiRT 4, Richard Burns Rally, BeamNG.drive (protocol mod), Trackmania (Openplanet plugin) |
 | [`unreal/`](unreal/README.md) | An Unreal Editor plugin that exports a level as a `.glb` | Developers with the project open |
+| [`cs2/`](cs2/README.md) | Counter-Strike 2 demos into heatmap tables (every player's position, every kill, grenade and plant where it happened) and match summaries (score, rounds, economy, scoreboard); CS2 maps into level geometry | Counter-Strike 2 |
 
 Which game is recorded how, and which courses can be exported and why not:
 [`docs/games.md`](docs/games.md). The lap file every recorder writes:
@@ -46,6 +48,15 @@ python -m heat3d_gamefiles course ../gamecapture/laps/<lap>.json -o course.glb
 `course` finds the game from the lap file, the installed game in any Steam
 library, and the level or stage from where the lap was driven.
 
+Counter-Strike 2 demos, and the map they were played on:
+
+```bash
+cd cs2
+pip install -r requirements.txt
+python -m heat3d_cs2 demos <folder of .dem files> -o out
+python -m heat3d_cs2 map de_mirage -o out/maps/de_mirage.glb
+```
+
 ## The rules these are built under
 
 - **Nothing injects into a game's process.** Telemetry comes only from what the
@@ -64,7 +75,7 @@ library, and the level or stage from where the lap was driven.
 
 One file in the game's world coordinates, Y up, in the unit its telemetry uses -
 metres for the racing games, Unreal's centimetres from the Unreal exporter
-(`--scale 0.01` turns them into metres). Every part is a node whose name
+(`--scale 0.01` turns them into metres), CS2's inches from the CS2 map export. Every part is a node whose name
 says what it is: `ground:<kind>` (road, kerbs, verge, terrain, gravel and dirt,
 markings ...), `structure:<kind>` (barriers, buildings, trees, props, signs ...)
 or `water:<kind>`. A reader classifies by the node name, `^(ground|structure|water)\s*[:|]`;
@@ -78,6 +89,7 @@ Each folder has its own suite:
 ```bash
 cd gamefiles && python -m pytest
 cd gamecapture && .venv/Scripts/python -m pytest
+cd cs2 && python -m pytest
 ```
 
 Tests that read installed games find them in any Steam library on the machine

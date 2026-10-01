@@ -1,0 +1,10 @@
+# CS2 demos and maps. Everything here is permissive; see ../LICENSES.md.
+demoparser2>=0.42
+pyarrow>=15
+pandas>=2.0
+numpy>=1.24
+pytest>=8.0
+
+# Not installable here, and not bundled: the map export runs Source2Viewer's
+# command line (ValveResourceFormat, MIT) - download its CLI build and put it
+# on PATH, set HEAT3D_SOURCE2VIEWER, or pass --source2viewer.
