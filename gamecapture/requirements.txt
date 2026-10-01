@@ -1,0 +1,23 @@
+# PyTorch is deliberately absent: the correct wheel depends on the GPU and CUDA
+# version, and pinning one here would install a CPU build on the machines that
+# most need the GPU one. See the README.
+#
+# Install it *before* this file, not after. The torch wheels pull numpy in as a
+# dependency and will happily settle on a 1.x release, which scipy then refuses
+# to run against — and the failure surfaces as `module numpy has no attribute
+# long` from inside scipy, nowhere near its cause. The upper bound is scipy's.
+numpy>=2.0,<2.8
+opencv-python>=4.10
+windows-capture>=1.4 ; sys_platform == "win32"
+scipy>=1.11
+scikit-image>=0.22
+pytest>=8.0
+
+# The interface.
+PySide6-Essentials>=6.6
+
+# Inference. DirectML is the default because it is the one that reaches AMD and
+# Intel GPUs as well as NVIDIA; `onnxruntime-gpu` is a faster alternative for
+# NVIDIA specifically, and the two conflict, so only one may be installed.
+onnxruntime-directml>=1.19 ; sys_platform == "win32"
+onnxruntime>=1.19 ; sys_platform != "win32"

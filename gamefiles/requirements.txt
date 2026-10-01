@@ -1,0 +1,25 @@
+# Reading shipped game archives. Everything here is permissive; see LICENSES.md.
+numpy>=2.0
+
+# Only needed to open an archive you already hold the AES key for. Not a
+# dependency of reading unencrypted archives, which is every one tested so far.
+cryptography>=42.0
+
+# LZ4: Forza's archives are mostly LZ4 blocks, and some Unity bundles are too.
+lz4>=4.3
+
+# Decoding block-compressed textures (BC1, BC7) and writing the JPEGs a textured
+# export carries. Needed by the Forza `course` export; nothing else uses it.
+Pillow>=10.0
+
+# BeamNG's compiled shapes (.cdae) are MessagePack, a few of them zstd-compressed.
+# Needed by the BeamNG `course` export; nothing else uses them.
+msgpack>=1.0
+zstandard>=0.22
+
+pytest>=8.0
+
+# Not installable, and deliberately not vendored: most shipped Unreal content is
+# Oodle-compressed, and Oodle is proprietary with no redistributable build. The
+# reader loads a copy already on the machine — any game or engine install that
+# ships oo2core_*.dll has one. Point at it with HEAT3D_OODLE=<path>.

@@ -1,0 +1,8 @@
+[meta]
+name = "3DHeat recorder"
+author = "3DHeat"
+category = "Utilities"
+version = "1.0.0"
+
+[script]
+dependencies = ["VehicleState"]
