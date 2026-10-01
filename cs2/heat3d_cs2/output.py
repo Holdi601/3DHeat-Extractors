@@ -28,6 +28,8 @@ HINTS = {
     "version": 1,
     "kind": "cs2-demo",
     "axes": {"up": "z", "flipX": False, "flipY": True, "flipZ": False, "scale": 1},
+    # A player is 32 units across: the size a box replay draws one.
+    "entity": {"size": 32},
     "columns": {
         "x": "x",
         "y": "y",

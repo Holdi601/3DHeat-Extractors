@@ -42,8 +42,9 @@ default). Matches already written are skipped unless `--force`.
 
 The file's Parquet footer carries reading instructions under the key
 `heat3d`: which column is the position, the time, the player, the side, the
-session and the look direction, and that the world is drawn with the
-vertical as Y and the game's Y negated. CS2's world is right-handed with Z
+session and the look direction, how big a player is (32 units across, the
+size a box replay draws one), and that the world is drawn with the vertical
+as Y and the game's Y negated. CS2's world is right-handed with Z
 up; drawn the way a left-handed Z-up world is, it comes out mirrored, A site
 on the wrong side. The viewer reads the instructions and opens the file with
 nothing to set.
