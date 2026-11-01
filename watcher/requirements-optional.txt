@@ -1,0 +1,2 @@
+# Optional: each enables more games. Install only the ones for games you play;
+# `python -m heat3d_watch games` says which adapter wants which.

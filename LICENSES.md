@@ -24,6 +24,7 @@ source is what counts, not this file.
 | **Game capture** (`gamecapture/`) | Level reconstructed from gameplay video; lap telemetry recorded from games' published interfaces | Players, and anyone without the project files | **Depends on the model chosen** — see below |
 | **Game files** (`gamefiles/`) | Courses and levels read out of shipped archives | Players and developers with an installed game | Yes for the tool; the game's own content stays its owner's |
 | **CS2** (`cs2/`) | Counter-Strike 2 demos into tables and match summaries; maps into geometry | Players, analysts, teams | Yes for the tool; demos and maps stay their owners' |
+| **Watcher** (`watcher/`) | Records play in the background from what games publish: telemetry, game-state integrations, logs, replays, Steam and NVIDIA files | Players, for their own statistics | Yes for the tool; what it records is the player's own play |
 
 A studio developer has the project open and should use the Unreal exporter: it
 reads the real geometry and is exact. Someone without the project — a player,
@@ -240,6 +241,36 @@ What remains the user's responsibility either way is the EULA of the game they
 point it at. Those commonly prohibit reverse engineering and are enforceable
 contracts; that obligation sits with whoever runs the tool, on whichever game,
 and no design choice here discharges it.
+
+## Watcher - `watcher/`
+
+### Software
+
+| Package | Licence | Note |
+|---|---|---|
+| psutil | BSD-3-Clause | Which games are running |
+| pyarrow | Apache-2.0 | Writing Parquet |
+| numpy | BSD-3-Clause | |
+| pytest | MIT | Development only |
+
+Everything else is the standard library. Each game's interface was written from
+its published description - Valve's game-state integration, Riot's Live Client
+Data API, Psyonix's Stats API, Codemasters' F1 UDP specification, iRacing's SDK
+header, Sector3's `r3e.h`, the SCS telemetry SDK and the RenCloud plugin's
+header, SimConnect's documented structures, X-Plane's and IL-2's own UDP
+documents, Tacview's ACMI format, Frontier's journal manual, the osu! wiki's
+replay format, and the file layouts of Steam and the NVIDIA App as they are on
+disk. No code was taken from GPL or unlicensed projects; where such a project
+was consulted, only facts about a format were.
+
+The DCS hook (`heat3d-watch.lua`) and the CS2/Dota 2 game-state configuration
+files the watcher writes on `setup --apply` are its own, MIT like the rest.
+
+### What it reads
+
+Only what the games hand out, and files on the player's own machine. Reading a
+game's memory is limited to single-player games behind the checks in
+`docs/watcher.md`, read only, off by default; no profiles ship.
 
 ---
 

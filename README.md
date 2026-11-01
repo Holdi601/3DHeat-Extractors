@@ -17,6 +17,7 @@ the third-party packages and models they use.
 | [`gamecapture/`](gamecapture/README.md) | Records lap telemetry from the interfaces games publish for it, and reconstructs a level from gameplay video | Forza Horizon and Motorsport, Assetto Corsa / ACC / EVO / Rally, EA SPORTS WRC, DiRT Rally 2.0 / 1 / DiRT 4, Richard Burns Rally, BeamNG.drive (protocol mod), Trackmania (Openplanet plugin) |
 | [`unreal/`](unreal/README.md) | An Unreal Editor plugin that exports a level as a `.glb` | Developers with the project open |
 | [`cs2/`](cs2/README.md) | Counter-Strike 2 demos into heatmap tables (every player's position, every kill, grenade and plant where it happened) and match summaries (score, rounds, economy, scoreboard); CS2 maps into level geometry | Counter-Strike 2 |
+| [`watcher/`](watcher/README.md) | Records your play in the background from what games publish - telemetry, game-state integrations, journals and logs, replays, Steam's statistics and timelines, NVIDIA highlights - as heatmap tables and a statistics database on your own machine | 40+ games: racing and flight sims, CS2, Dota 2, League of Legends, Rocket League, War Thunder, Elite Dangerous, Minecraft, Path of Exile, osu! and more; see [`docs/watcher.md`](docs/watcher.md) |
 
 Which game is recorded how, and which courses can be exported and why not:
 [`docs/games.md`](docs/games.md). The lap file every recorder writes:
@@ -57,11 +58,32 @@ python -m heat3d_cs2 demos <folder of .dem files> -o out
 python -m heat3d_cs2 map de_mirage -o out/de_mirage/de_mirage.glb
 ```
 
+Record your play in the background, every game that publishes something:
+
+```bash
+cd watcher
+pip install -r requirements.txt
+python -m heat3d_watch games      # what each game gives, and from where
+python -m heat3d_watch run        # leave it running
+python -m heat3d_watch stats      # your numbers per game
+```
+
+## Staying current
+
+Every tool checks this repository's releases when it starts (at most every six
+hours), says when a newer version is out, and offers to update itself - with
+`git pull` in a clone, by replacing its files from the release in a download.
+The watcher updates itself while no game is running. `python -m heat3d_update`
+updates on request; `HEAT3D_NO_UPDATE=1` switches the check off.
+
 ## The rules these are built under
 
 - **Nothing injects into a game's process.** Telemetry comes only from what the
   games publish for it: UDP outputs, shared memory, their own mod and plugin
-  interfaces. Video comes from Windows Graphics Capture, the API screen
+  interfaces, game-state integrations, the files they write. The one exception
+  is reading - never writing - the memory of single-player games, off by
+  default and refused wherever an anti-cheat or an online session is in play
+  ([`docs/watcher.md`](docs/watcher.md#reading-memory)). Video comes from Windows Graphics Capture, the API screen
   recorders use.
 - **No keys are shipped and none are recovered.** An encrypted archive opens
   only with a key you already hold. Formats that are obfuscated with a key are
