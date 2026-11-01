@@ -1,4 +1,16 @@
-# 3DHeat Extractors
+# 3DHeat Extractors - moved
+
+> **These tools now live in repositories of their own**, each with its own
+> licence (MIT), releases, wiki and update check. This repository is kept so
+> existing links keep working; new versions are released only there.
+>
+> | Tool | Repository |
+> |---|---|
+> | Courses and levels out of games' archives | [3DHeat-GameFiles](https://github.com/Holdi601/3DHeat-GameFiles) |
+> | Lap telemetry recorders; levels from gameplay video | [3DHeat-GameCapture](https://github.com/Holdi601/3DHeat-GameCapture) |
+> | Unreal Editor level exporter | [3DHeat-UnrealExporter](https://github.com/Holdi601/3DHeat-UnrealExporter) |
+> | Counter-Strike 2 demos and maps | [3DHeat-CS2](https://github.com/Holdi601/3DHeat-CS2) |
+> | Background recorder of what games publish | [3DHeat-Watcher](https://github.com/Holdi601/3DHeat-Watcher) |
 
 Free and open-source tools that get a game's courses, levels, lap telemetry
 and match recordings out into plain files: a level or course as a `.glb`
